@@ -1,126 +1,120 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Clock3, Menu, Phone, ShieldCheck, Star, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, Menu, Phone, X } from "lucide-react";
+import { useState } from "react";
 
-const services = [
-  {name:"Wood Fencing",desc:"Warm, private, and easy to customize for sloped lots or unique property lines.",price:"From $38 / ft"},
-  {name:"Vinyl Fencing",desc:"Low-maintenance privacy with clean lines and long-term color stability.",price:"From $42 / ft"},
-  {name:"Chain Link",desc:"Practical security for yards, pets, rentals, and commercial properties.",price:"From $24 / ft"},
-  {name:"Ornamental",desc:"Open sightlines with a refined, durable aluminum or steel profile.",price:"From $54 / ft"},
+const hero="https://images.unsplash.com/photo-1778166166419-792a411e197c?auto=format&fit=crop&fm=jpg&q=82&w=2200";
+const detail="https://images.unsplash.com/photo-1759355787121-eaef014a501d?auto=format&fit=crop&fm=jpg&q=82&w=2200";
+
+const services=[
+  {name:"Wood",copy:"Warm, private, and flexible for changing grades or custom layouts.",meta:"Privacy · Custom"},
+  {name:"Vinyl",copy:"Clean lines and low maintenance for modern residential properties.",meta:"Low care · Durable"},
+  {name:"Ornamental",copy:"Open sightlines with a refined metal profile and long service life.",meta:"Architectural · Secure"},
+  {name:"Chain link",copy:"Straightforward perimeter security for pets, rentals, and utility areas.",meta:"Practical · Fast"},
 ];
 
-export default function LocalLeadGenDemo(){
+export default function Cedarline(){
   const [menu,setMenu]=useState(false);
-  const [step,setStep]=useState<1|2|3>(1);
-  const [service,setService]=useState("Wood Fencing");
+  const [quoteOpen,setQuoteOpen]=useState(false);
+  const [step,setStep]=useState(1);
+  const [service,setService]=useState("Wood");
   const [zip,setZip]=useState("");
-  const [timeline,setTimeline]=useState("Within 30 days");
-  const [name,setName]=useState("");
   const [contact,setContact]=useState("");
-  const [toast,setToast]=useState("");
-  const [activeService,setActiveService]=useState(0);
+  const [done,setDone]=useState(false);
 
-  const progress=useMemo(()=>step===1?33:step===2?66:100,[step]);
-  function notify(s:string){setToast(s);setTimeout(()=>setToast(""),2400)}
-  function next(){
-    if(step===1 && !zip.trim()) return notify("Add your ZIP code to continue.");
-    setStep(s=>Math.min(3,s+1) as 1|2|3);
-  }
-  function submit(){
-    if(!name.trim()||!contact.trim()) return notify("Add your name and phone or email.");
-    setStep(3); notify("Quote request submitted in Demo Mode.");
-  }
+  function reset(){setStep(1);setDone(false);setZip("");setContact("")}
 
-  return <main className="demo-light min-h-screen bg-[#f6f3ec] text-[#15231d] pb-16 md:pb-0">
-    <div className="bg-[#173f32] px-4 py-2 text-center text-[11px] font-medium tracking-wide text-white/80">Spec project · conversion-focused local service website · simulated quote form</div>
-
-    <header className="sticky top-0 z-40 border-b border-[#173f32]/10 bg-[#f6f3ec]/92 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+  return <main className="min-h-screen bg-[#f3f0e8] text-[#17352b] pb-16 md:pb-0">
+    <header className="absolute inset-x-0 top-0 z-40 text-white">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-5 lg:px-8">
         <div className="flex items-center gap-4">
-          <Link href="/" className="rounded-full border border-[#173f32]/12 p-2 text-[#173f32]/55 transition hover:bg-white"><ArrowLeft size={16}/></Link>
-          <div><p className="text-sm font-black tracking-[.08em]">CEDARLINE</p><p className="text-[8px] uppercase tracking-[.22em] text-[#173f32]/45">Fence & outdoor</p></div>
+          <Link href="/" className="grid h-9 w-9 place-items-center rounded-full border border-white/25 bg-black/10 backdrop-blur"><ArrowLeft size={15}/></Link>
+          <div><p className="text-sm font-black tracking-[.11em]">CEDARLINE</p><p className="text-[8px] uppercase tracking-[.24em] text-white/60">Outdoor Co.</p></div>
         </div>
-        <nav className="hidden items-center gap-6 text-xs font-semibold md:flex">
-          <a href="#services">Services</a><a href="#why">Why Cedarline</a><a href="#quote">Get a quote</a>
-        </nav>
-        <div className="hidden items-center gap-2 md:flex">
-          <button onClick={()=>notify("Calling is simulated in Demo Mode.")} className="flex items-center gap-2 rounded-full border border-[#173f32]/12 px-4 py-2.5 text-xs font-semibold"><Phone size={14}/> (509) 555-0148</button>
-          <a href="#quote" className="rounded-full bg-[#173f32] px-4 py-2.5 text-xs font-semibold text-white">Free quote</a>
+        <nav className="hidden items-center gap-7 text-xs font-semibold md:flex"><a href="#services">Services</a><a href="#process">Process</a><a href="#quote">Quote</a></nav>
+        <div className="hidden gap-2 md:flex">
+          <button onClick={()=>setQuoteOpen(true)} className="rounded-full border border-white/25 bg-black/10 px-4 py-2.5 text-xs font-semibold backdrop-blur">Call (509) 555-0148</button>
+          <button onClick={()=>setQuoteOpen(true)} className="rounded-full bg-white px-4 py-2.5 text-xs font-semibold text-[#17352b]">Free estimate</button>
         </div>
-        <button className="md:hidden" onClick={()=>setMenu(v=>!v)}>{menu?<X size={20}/>:<Menu size={20}/>}</button>
+        <button onClick={()=>setMenu(v=>!v)} className="grid h-9 w-9 place-items-center rounded-full border border-white/25 bg-black/10 backdrop-blur md:hidden">{menu?<X size={16}/>:<Menu size={16}/>}</button>
       </div>
-      {menu&&<div className="border-t border-[#173f32]/10 px-5 py-4 md:hidden"><a onClick={()=>setMenu(false)} className="block py-2 text-sm" href="#services">Services</a><a onClick={()=>setMenu(false)} className="block py-2 text-sm" href="#why">Why Cedarline</a><a onClick={()=>setMenu(false)} className="block py-2 text-sm" href="#quote">Get a quote</a></div>}
+      {menu&&<div className="mx-5 rounded-2xl border border-white/15 bg-[#17352b]/94 p-4 backdrop-blur md:hidden"><a onClick={()=>setMenu(false)} className="block py-2 text-sm" href="#services">Services</a><a onClick={()=>setMenu(false)} className="block py-2 text-sm" href="#process">Process</a><button onClick={()=>{setMenu(false);setQuoteOpen(true)}} className="mt-2 w-full rounded-full bg-white py-3 text-sm font-semibold text-[#17352b]">Start quote</button></div>}
     </header>
 
-    <section className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-16">
-      <div className="flex flex-col justify-center">
-        <div className="mb-5 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[.16em] text-[#173f32]/58"><span className="rounded-full bg-[#e4e8dd] px-3 py-1.5">Licensed & insured</span><span className="rounded-full bg-[#e4e8dd] px-3 py-1.5">Spokane area</span></div>
-        <h1 className="max-w-3xl text-5xl font-semibold leading-[.94] tracking-[-.055em] sm:text-6xl lg:text-7xl">A better fence starts with a clearer plan.</h1>
-        <p className="mt-6 max-w-xl text-base leading-7 text-[#173f32]/62">Wood, vinyl, chain link, and ornamental fencing with straightforward options, responsive communication, and a quote process designed for busy homeowners.</p>
-        <div className="mt-7 flex flex-wrap gap-3"><a href="#quote" className="flex items-center gap-2 rounded-full bg-[#173f32] px-5 py-3.5 text-sm font-semibold text-white">Start free quote <ArrowRight size={16}/></a><button onClick={()=>notify("Call action simulated.")} className="flex items-center gap-2 rounded-full border border-[#173f32]/15 bg-white/45 px-5 py-3.5 text-sm font-semibold"><Phone size={15}/> Call now</button></div>
-        <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-xs text-[#173f32]/52"><span className="flex items-center gap-2"><Star size={14} fill="currentColor"/> 4.9 homeowner rating</span><span className="flex items-center gap-2"><ShieldCheck size={15}/> Workmanship warranty</span><span className="flex items-center gap-2"><Clock3 size={15}/> Fast estimate turnaround</span></div>
-      </div>
-
-      <div className="relative min-h-[520px] overflow-hidden rounded-[32px] bg-[linear-gradient(155deg,#435f4f,#b0a282_62%,#d8c8ad)] shadow-2xl">
-        <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(90deg,transparent_0_42%,rgba(64,43,25,.46)_42%_45%,transparent_45%_58%,rgba(64,43,25,.46)_58%_61%,transparent_61%)]"/>
-        <div className="absolute inset-x-5 bottom-5 rounded-[22px] border border-white/40 bg-white/90 p-5 backdrop-blur-xl">
-          <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#173f32]/45">Fast estimate</p><p className="mt-1 text-lg font-semibold">Tell us the project. We’ll tell you the next step.</p></div><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#173f32] text-white"><ChevronRight size={16}/></span></div>
-          <div className="mt-4 grid grid-cols-2 gap-2 text-[10px]"><span className="rounded-xl bg-[#173f32]/6 p-3">1. Choose fence type</span><span className="rounded-xl bg-[#173f32]/6 p-3">2. Add property details</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="services" className="border-y border-[#173f32]/10 bg-[#eeeadf]">
-      <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
-        <div className="mb-9 grid gap-5 lg:grid-cols-[.72fr_1.28fr] lg:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[.2em] text-[#173f32]/40">Fence options</p><h2 className="mt-2 text-4xl font-semibold tracking-[-.05em]">One structure. Four clear service pages.</h2></div><p className="max-w-2xl text-sm leading-6 text-[#173f32]/54">The same page framework can support separate Google Ads landing pages while keeping typography, CTAs, image ratios, trust signals, and quote flow consistent.</p></div>
-        <div className="grid gap-3 lg:grid-cols-[.42fr_.58fr]">
-          <div className="space-y-2">{services.map((s,i)=><button key={s.name} onClick={()=>setActiveService(i)} className={`w-full rounded-2xl border p-4 text-left transition ${i===activeService?"border-[#173f32] bg-[#173f32] text-white":"border-[#173f32]/10 bg-white/45 hover:bg-white"}`}><div className="flex items-center justify-between"><span className="font-semibold">{s.name}</span><span className={`text-[10px] ${i===activeService?"text-white/55":"text-[#173f32]/38"}`}>{s.price}</span></div></button>)}</div>
-          <div className="grid min-h-80 overflow-hidden rounded-[26px] border border-[#173f32]/10 bg-white lg:grid-cols-[.95fr_1.05fr]">
-            <div className="bg-[linear-gradient(145deg,#6e806f,#b2a48b)]"/>
-            <div className="p-6 lg:p-8"><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#173f32]/35">Selected service</p><h3 className="mt-3 text-3xl font-semibold tracking-[-.04em]">{services[activeService].name}</h3><p className="mt-4 text-sm leading-7 text-[#173f32]/54">{services[activeService].desc}</p><div className="mt-7 space-y-3 text-xs text-[#173f32]/62">{["Clear material options","Mobile-first quote CTA","Reusable content blocks"].map(x=><p key={x} className="flex items-center gap-2"><CheckCircle2 size={15}/>{x}</p>)}</div><a href="#quote" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold">Get a quote for this service <ArrowRight size={15}/></a></div>
+    <section className="relative min-h-[92vh] overflow-hidden">
+      <img src={hero} alt="Modern home with contemporary fencing" className="absolute inset-0 h-full w-full object-cover"/>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#10271f]/90 via-[#10271f]/18 to-black/30"/>
+      <div className="relative mx-auto flex min-h-[92vh] max-w-[1440px] items-end px-5 pb-10 pt-32 lg:px-8 lg:pb-14">
+        <div className="grid w-full gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-end">
+          <div className="reveal">
+            <p className="mb-5 text-[10px] font-semibold uppercase tracking-[.22em] text-white/62">Residential fencing · Spokane, WA</p>
+            <h1 className="max-w-5xl text-[clamp(3.7rem,8vw,8rem)] font-medium leading-[.84] tracking-[-.075em] text-white">Built for the edge of home.</h1>
+          </div>
+          <div className="reveal-d1 max-w-xl">
+            <p className="text-base leading-7 text-white/72">Thoughtful fencing for privacy, security, and curb appeal — with a quote process that starts simple and stays clear.</p>
+            <div className="mt-7 flex flex-wrap gap-3"><button onClick={()=>setQuoteOpen(true)} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-[#17352b]">Get a free estimate <ArrowRight size={15}/></button><a href="#services" className="rounded-full border border-white/25 bg-black/10 px-5 py-3.5 text-sm font-semibold text-white backdrop-blur">Explore services</a></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="why" className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
-      <div className="grid gap-5 md:grid-cols-3">
-        <Value no="01" title="Built for paid traffic" text="A clear headline, location context, service proof, repeated CTA, and short form reduce the distance between ad click and enquiry."/>
-        <Value no="02" title="Built for mobile" text="Call and quote actions stay obvious on small screens, while content collapses into a simple scan path instead of a desktop layout squeezed down."/>
-        <Value no="03" title="Built to stay consistent" text="Service pages share reusable sections, spacing, typography, image ratios, and conversion blocks so future edits do not create visual drift."/>
+    <section className="border-b border-[#17352b]/12 bg-[#e9e6dc]">
+      <div className="mx-auto grid max-w-[1440px] grid-cols-2 divide-x divide-[#17352b]/10 px-5 lg:grid-cols-4 lg:px-8">
+        {["Licensed & insured","Residential focus","Clear estimate process","Mobile-first contact"].map((x,i)=><div key={x} className="px-4 py-5 text-center text-[10px] font-semibold uppercase tracking-[.16em] text-[#17352b]/52">{x}</div>)}
       </div>
     </section>
 
-    <section id="quote" className="border-t border-[#173f32]/10 bg-[#173f32] text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[.7fr_1.3fr] lg:px-8 lg:py-20">
-        <div><p className="text-[10px] font-bold uppercase tracking-[.2em] text-white/38">Quote flow</p><h2 className="mt-3 text-4xl font-semibold tracking-[-.05em]">Short enough to finish. Useful enough to qualify the lead.</h2><p className="mt-5 max-w-md text-sm leading-7 text-white/48">This form is intentionally simulated. It demonstrates the interaction pattern for WordPress, Elementor, Gravity Forms, Fluent Forms, or a custom implementation.</p></div>
-        <div className="rounded-[28px] bg-[#f8f6ef] p-5 text-[#173f32] sm:p-7">
-          <div className="mb-6"><div className="flex items-center justify-between text-xs"><span className="font-semibold">Project quote</span><span className="text-[#173f32]/42">Step {step} of 3</span></div><div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#173f32]/8"><div className="h-full rounded-full bg-[#173f32] transition-all duration-300" style={{width:`${progress}%`}}/></div></div>
+    <section id="services" className="mx-auto max-w-[1440px] px-5 py-20 lg:px-8 lg:py-28">
+      <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
+        <div><p className="text-[10px] font-bold uppercase tracking-[.2em] text-[#17352b]/38">Services</p><h2 className="mt-3 text-5xl font-medium leading-[.94] tracking-[-.055em]">One visual system.<br/>Four service paths.</h2></div>
+        <p className="max-w-2xl text-sm leading-7 text-[#17352b]/55">Each service page follows the same conversion structure: specific promise, material fit, visual proof, location relevance, and one obvious next action. That keeps paid-traffic landing pages consistent instead of slowly drifting apart.</p>
+      </div>
 
-          {step===1&&<div>
-            <p className="text-2xl font-semibold tracking-[-.03em]">What are you planning?</p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">{services.map(s=><button key={s.name} onClick={()=>setService(s.name)} className={`rounded-2xl border p-4 text-left text-sm font-semibold transition ${service===s.name?"border-[#173f32] bg-[#173f32] text-white":"border-[#173f32]/12 bg-white"}`}>{s.name}</button>)}</div>
-            <label className="mt-5 block text-xs font-semibold">ZIP code</label><input value={zip} onChange={e=>setZip(e.target.value)} placeholder="99206" className="mt-2 w-full rounded-2xl border border-[#173f32]/12 bg-white px-4 py-3.5 outline-none"/>
-            <button onClick={next} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#173f32] px-4 py-3.5 text-sm font-semibold text-white">Continue <ArrowRight size={15}/></button>
-          </div>}
+      <div className="mt-12 grid gap-3 md:grid-cols-2">
+        {services.map((s,i)=><article key={s.name} className={`group min-h-72 overflow-hidden rounded-[26px] border border-[#17352b]/10 p-6 transition ${i===0?"bg-[#17352b] text-white":"bg-white/45 hover:bg-white"}`}>
+          <div className="flex h-full flex-col justify-between">
+            <div className="flex items-start justify-between"><span className={`text-xs ${i===0?"text-white/35":"text-[#17352b]/28"}`}>0{i+1}</span><span className={`text-[9px] uppercase tracking-[.16em] ${i===0?"text-white/42":"text-[#17352b]/35"}`}>{s.meta}</span></div>
+            <div><h3 className="text-3xl font-medium tracking-[-.04em]">{s.name}</h3><p className={`mt-3 max-w-md text-sm leading-6 ${i===0?"text-white/55":"text-[#17352b]/50"}`}>{s.copy}</p><button onClick={()=>{setService(s.name);setQuoteOpen(true)}} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">Quote this service <ArrowRight size={14}/></button></div>
+          </div>
+        </article>)}
+      </div>
+    </section>
 
-          {step===2&&<div>
-            <p className="text-2xl font-semibold tracking-[-.03em]">When would you like to start?</p>
-            <div className="mt-5 grid gap-3">{["As soon as possible","Within 30 days","1–3 months","Just researching"].map(x=><button key={x} onClick={()=>setTimeline(x)} className={`rounded-2xl border p-4 text-left text-sm font-semibold ${timeline===x?"border-[#173f32] bg-[#173f32] text-white":"border-[#173f32]/12 bg-white"}`}>{x}</button>)}</div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2"><input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" className="rounded-2xl border border-[#173f32]/12 bg-white px-4 py-3.5 outline-none"/><input value={contact} onChange={e=>setContact(e.target.value)} placeholder="Phone or email" className="rounded-2xl border border-[#173f32]/12 bg-white px-4 py-3.5 outline-none"/></div>
-            <button onClick={submit} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#173f32] px-4 py-3.5 text-sm font-semibold text-white">Request estimate <ArrowRight size={15}/></button>
-          </div>}
-
-          {step===3&&<div className="py-8 text-center"><span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#dfe8df]"><CheckCircle2 size={26}/></span><h3 className="mt-5 text-2xl font-semibold">Request received.</h3><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#173f32]/52">Demo Mode: no data was sent. A real build would route the lead to email/CRM, preserve UTM parameters, and fire a confirmed conversion event after success.</p><button onClick={()=>{setStep(1);setName("");setContact("");setZip("")}} className="mt-6 rounded-full border border-[#173f32]/15 px-4 py-2.5 text-sm font-semibold">Try again</button></div>}
+    <section className="grid min-h-[78vh] lg:grid-cols-[1.08fr_.92fr]">
+      <div className="relative min-h-[560px] overflow-hidden">
+        <img src={detail} alt="Modern residential exterior with wood fencing" className="absolute inset-0 h-full w-full object-cover"/>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"/>
+      </div>
+      <div id="process" className="flex flex-col justify-center bg-[#17352b] p-6 text-white sm:p-10 lg:p-14">
+        <p className="text-[10px] font-bold uppercase tracking-[.2em] text-white/34">How it works</p>
+        <h2 className="mt-3 max-w-xl text-5xl font-medium leading-[.95] tracking-[-.055em]">From ad click to qualified lead without a maze.</h2>
+        <div className="mt-10 divide-y divide-white/10 border-y border-white/10">
+          <Step no="01" title="Choose the project" text="The first screen asks only what is necessary to route the lead correctly."/>
+          <Step no="02" title="Add location & timing" text="ZIP and timeline give enough context without turning the form into a questionnaire."/>
+          <Step no="03" title="Confirm contact" text="Success is immediate, measurable, and ready to connect to CRM or conversion tracking."/>
         </div>
       </div>
     </section>
 
-    <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 border-t border-[#173f32]/15 bg-[#f8f6ef] p-2 md:hidden"><button onClick={()=>notify("Call action simulated.")} className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold"><Phone size={16}/> Call</button><a href="#quote" className="flex items-center justify-center gap-2 rounded-xl bg-[#173f32] py-3 text-sm font-semibold text-white">Free quote <ArrowRight size={15}/></a></div>
-    {toast&&<div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#111f19] px-4 py-2.5 text-sm text-white shadow-xl md:bottom-5">{toast}</div>}
+    <section id="quote" className="mx-auto grid max-w-[1440px] gap-10 px-5 py-20 lg:grid-cols-[.72fr_1.28fr] lg:px-8 lg:py-28">
+      <div><p className="text-[10px] font-bold uppercase tracking-[.2em] text-[#17352b]/38">Quote flow</p><h2 className="mt-3 text-5xl font-medium leading-[.95] tracking-[-.055em]">Short enough to finish.</h2><p className="mt-5 max-w-md text-sm leading-7 text-[#17352b]/50">This prototype keeps the request intentionally small. In a production build, the same flow could connect to WordPress forms, HubSpot, email, CRM, and Google Ads conversion events.</p></div>
+      <QuoteCard service={service} setService={setService} zip={zip} setZip={setZip} contact={contact} setContact={setContact} step={step} setStep={setStep} done={done} setDone={setDone} reset={reset}/>
+    </section>
+
+    <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 border-t border-[#17352b]/12 bg-[#f3f0e8]/96 p-2 backdrop-blur md:hidden"><button onClick={()=>setQuoteOpen(true)} className="flex items-center justify-center gap-2 py-3 text-sm font-semibold"><Phone size={15}/> Call</button><button onClick={()=>setQuoteOpen(true)} className="rounded-full bg-[#17352b] py-3 text-sm font-semibold text-white">Free estimate</button></div>
+
+    {quoteOpen&&<div className="fixed inset-0 z-50 grid place-items-center bg-black/55 p-4 backdrop-blur-sm" onClick={()=>setQuoteOpen(false)}><div onClick={e=>e.stopPropagation()} className="w-full max-w-xl rounded-[28px] bg-[#f7f4ec] p-5 text-[#17352b] shadow-2xl sm:p-7"><div className="mb-5 flex items-center justify-between"><div><p className="text-xs font-semibold">Fast estimate</p><p className="mt-1 text-[10px] text-[#17352b]/38">Demo Mode · nothing is submitted</p></div><button onClick={()=>setQuoteOpen(false)} className="rounded-full border border-[#17352b]/10 p-2"><X size={15}/></button></div><QuoteCard service={service} setService={setService} zip={zip} setZip={setZip} contact={contact} setContact={setContact} step={step} setStep={setStep} done={done} setDone={setDone} reset={reset}/></div></div>}
   </main>
 }
 
-function Value({no,title,text}:{no:string;title:string;text:string}){return <div className="rounded-[24px] border border-[#173f32]/10 bg-white/45 p-6"><p className="text-xs text-[#173f32]/32">{no}</p><h3 className="mt-8 text-xl font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-[#173f32]/52">{text}</p></div>}
+function Step({no,title,text}:{no:string;title:string;text:string}){return <div className="grid gap-3 py-5 sm:grid-cols-[55px_1fr]"><span className="text-xs text-white/25">{no}</span><div><h3 className="font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-white/44">{text}</p></div></div>}
+
+function QuoteCard({service,setService,zip,setZip,contact,setContact,step,setStep,done,setDone,reset}:{service:string;setService:(v:string)=>void;zip:string;setZip:(v:string)=>void;contact:string;setContact:(v:string)=>void;step:number;setStep:(v:number)=>void;done:boolean;setDone:(v:boolean)=>void;reset:()=>void}){
+  if(done) return <div className="rounded-[26px] border border-[#17352b]/10 bg-white p-7 text-center"><span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#e5eee7]"><Check size={22}/></span><h3 className="mt-4 text-2xl font-semibold">Request captured.</h3><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#17352b]/48">Demo Mode: no information was sent. A real implementation would route the lead and confirm tracking only after success.</p><button onClick={reset} className="mt-6 rounded-full border border-[#17352b]/12 px-4 py-2.5 text-sm font-semibold">Start over</button></div>;
+
+  return <div className="rounded-[26px] border border-[#17352b]/10 bg-white p-5 sm:p-7">
+    <div className="mb-6 flex items-center justify-between"><div><p className="text-[10px] uppercase tracking-[.18em] text-[#17352b]/35">Project estimate</p><p className="mt-1 text-lg font-semibold">{step===1?"What are you planning?":"Where should we follow up?"}</p></div><span className="text-xs text-[#17352b]/35">0{step}/02</span></div>
+    {step===1?<><div className="grid grid-cols-2 gap-2">{services.map(s=><button key={s.name} onClick={()=>setService(s.name)} className={`rounded-2xl border p-3.5 text-left text-sm font-semibold ${service===s.name?"border-[#17352b] bg-[#17352b] text-white":"border-[#17352b]/10"}`}>{s.name}</button>)}</div><input value={zip} onChange={e=>setZip(e.target.value)} placeholder="ZIP code" className="mt-3 w-full rounded-2xl border border-[#17352b]/10 px-4 py-3.5 outline-none"/><button onClick={()=>zip.trim()&&setStep(2)} className="mt-3 w-full rounded-full bg-[#17352b] py-3.5 text-sm font-semibold text-white">Continue</button></>:<><input value={contact} onChange={e=>setContact(e.target.value)} placeholder="Phone or email" className="w-full rounded-2xl border border-[#17352b]/10 px-4 py-3.5 outline-none"/><div className="mt-3 grid grid-cols-2 gap-2"><button onClick={()=>setStep(1)} className="rounded-full border border-[#17352b]/12 py-3.5 text-sm font-semibold">Back</button><button onClick={()=>contact.trim()&&setDone(true)} className="rounded-full bg-[#17352b] py-3.5 text-sm font-semibold text-white">Request estimate</button></div></>}
+  </div>
+}
