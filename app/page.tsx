@@ -9,6 +9,9 @@ const projects = [
     title: "AI Social Content Studio",
     subtitle: "Interactive AI micro-SaaS",
     description: "A polished content workflow for ecommerce and marketing teams: brief input, simulated generation, results, history, pricing, and login states.",
+    challenge: "Turn one campaign idea into channel-ready content without repetitive rewriting or a heavy workspace.",
+    approach: "A focused brief → generate → review → export flow with realistic loading, history, pricing, and login states.",
+    features: ["Channel-aware drafts", "History & export states", "Responsive SaaS UI"],
     href: "/demo/ai-social-content-studio",
     tags: ["Next.js", "TypeScript", "Tailwind", "SaaS UX"],
     icon: Bot,
@@ -19,6 +22,9 @@ const projects = [
     title: "Atelier Commerce",
     subtitle: "Premium ecommerce storefront",
     description: "Editorial luxury storefront with light/dark themes, product variants, responsive navigation, cart drawer, quantity controls, and simulated checkout.",
+    challenge: "Create a premium independent-store experience that feels editorial without making the buying flow harder.",
+    approach: "Pair restrained visual direction with direct product discovery, variant selection, cart management, and clear checkout feedback.",
+    features: ["Light / dark mode", "Variants & cart drawer", "Responsive commerce flow"],
     href: "/demo/premium-ecommerce",
     tags: ["Next.js", "Responsive UI", "Commerce", "Motion"],
     icon: ShoppingBag,
@@ -29,6 +35,9 @@ const projects = [
     title: "Command Center",
     subtitle: "Analytics admin dashboard",
     description: "A business operations dashboard with KPI cards, live filters, charting, sortable records, pagination, create-record modal, and export states.",
+    challenge: "Make dense operational data easy to scan, filter, compare, and act on without losing context.",
+    approach: "Use a strong KPI hierarchy, compact visual analytics, searchable records, sorting, pagination, and action-focused modal flows.",
+    features: ["KPI & chart system", "Filter / sort / pagination", "Create & export states"],
     href: "/demo/admin-dashboard",
     tags: ["Dashboard", "Recharts", "Tables", "Data UX"],
     icon: BarChart3,
@@ -61,7 +70,7 @@ export default function PortfolioHome() {
             Three product experiences built to feel like real commercial software.
           </h1>
           <p className="mt-7 max-w-2xl text-base leading-7 text-white/48 md:text-lg">
-            Each project is an independent spec build focused on business-ready UI, complete user flows, responsive behavior, and realistic interaction states.
+            Each project is an independent spec build focused on business-ready UI, complete user flows, responsive behavior, and realistic interaction states. Every case includes the challenge, approach, stack, key features, and a live demo.
           </p>
         </div>
       </section>
@@ -84,10 +93,25 @@ export default function PortfolioHome() {
                       <p className="text-xs font-semibold uppercase tracking-[.2em] text-white/35">{project.subtitle}</p>
                       <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{project.title}</h2>
                       <p className="mt-5 max-w-xl text-sm leading-7 text-white/48">{project.description}</p>
-                      <div className="mt-6 flex flex-wrap gap-2">
-                        {project.tags.map((tag) => (
-                          <span key={tag} className="rounded-full border border-white/8 px-3 py-1.5 text-[11px] text-white/42">{tag}</span>
-                        ))}
+                      <div className="mt-6 grid gap-4">
+                        <CaseNote label="Challenge" text={project.challenge} />
+                        <CaseNote label="Approach" text={project.approach} />
+                        <div>
+                          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.18em] text-white/28">Tech stack</p>
+                          <div className="flex flex-wrap gap-2">
+                            {project.tags.map((tag) => (
+                              <span key={tag} className="rounded-full border border-white/8 px-3 py-1.5 text-[11px] text-white/42">{tag}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.18em] text-white/28">Key features</p>
+                          <div className="flex flex-wrap gap-2">
+                            {project.features.map((feature) => (
+                              <span key={feature} className="rounded-full bg-white/[.045] px-3 py-1.5 text-[11px] text-white/52">{feature}</span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -138,6 +162,10 @@ function Preview({ type }: { type: string }) {
       </div>
     </div>
   );
+}
+
+function CaseNote({label,text}:{label:string;text:string}) {
+  return <div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[.18em] text-white/28">{label}</p><p className="text-xs leading-6 text-white/48">{text}</p></div>;
 }
 
 function MiniMetric({value,label}:{value:string;label:string}) {
