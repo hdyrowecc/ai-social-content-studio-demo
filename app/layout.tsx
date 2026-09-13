@@ -3,13 +3,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Roecc — Product Frontend Portfolio",
-    template: "%s | Roecc Portfolio",
+    default: "Roecc — Web Product Portfolio",
+    template: "%s | Roecc",
   },
-  description: "Interactive product frontend portfolio featuring an AI SaaS, premium ecommerce storefront, and analytics dashboard.",
+  description: "Conversion-focused websites, ecommerce experiences, and product interfaces — interactive spec projects built for real freelance use cases.",
   openGraph: {
-    title: "Roecc — Product Frontend Portfolio",
-    description: "Three interactive spec projects built to demonstrate commercial product UI and frontend engineering.",
+    title: "Roecc — Web Product Portfolio",
+    description: "Selected interactive work across lead-generation websites, ecommerce, and SaaS product UI.",
     type: "website",
   },
 };
