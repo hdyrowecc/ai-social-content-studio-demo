@@ -1,26 +1,22 @@
-# Signal Studio — AI Social Content Studio
+# Interactive Spec Portfolio
 
-Interactive spec project for an AI-powered social media content SaaS.
+A single Next.js portfolio site containing three independently navigable, fully interactive frontend demos.
 
-## Portfolio positioning
-This is an independent **spec project / product concept** created to demonstrate end-to-end product UI, frontend interaction design, and SaaS workflow implementation. External AI, authentication, billing, and export services are intentionally simulated in the demo.
+## Live demo structure
+- `/` — Portfolio home
+- `/demo/ai-social-content-studio` — AI-powered micro-SaaS
+- `/demo/premium-ecommerce` — Premium ecommerce storefront
+- `/demo/admin-dashboard` — Analytics / admin dashboard
 
-## Key features
-- SaaS landing page and responsive navigation
-- Interactive AI content brief
-- Platform and tone controls
-- Simulated generation loading states and results
-- Copy/export interactions and demo-mode feedback
-- Campaign history
-- Pricing and simulated checkout
-- Login modal
-- Responsive mobile layout
+## Positioning
+These are independent **spec projects / product concepts** built to demonstrate commercial product design and frontend engineering. Simulated external services are clearly labeled. No fake client, revenue, user, or testimonial claims are used.
 
 ## Stack
 - Next.js App Router
 - React + TypeScript
 - Tailwind CSS
-- Lucide icons
+- Lucide
+- Recharts
 
 ## Local development
 ```bash
